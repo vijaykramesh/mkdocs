@@ -90,6 +90,7 @@ remote_name_help = ("The remote name to commit to for Github Pages. This "
                     "overrides the value specified in config")
 force_help = "Force the push to the repository."
 ignore_version_help = "Ignore check that build is not being deployed with an older version of MkDocs."
+yaml_safe_load_help = ("Use PyYAML#safe_load")
 
 pgk_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -114,8 +115,9 @@ def cli():
 @click.option('--livereload', 'livereload', flag_value='livereload', help=reload_help, default=True)
 @click.option('--no-livereload', 'livereload', flag_value='no-livereload', help=no_reload_help)
 @click.option('--dirtyreload', 'livereload', flag_value='dirty', help=dirty_reload_help)
+@click.option('-y', '--yaml-safe-load', is_flag=True, default=False, help=yaml_safe_load_help)
 @common_options
-def serve_command(dev_addr, config_file, strict, theme, theme_dir, livereload):
+def serve_command(dev_addr, config_file, strict, theme, theme_dir, livereload, yaml_safe_load):
     """Run the builtin development server"""
 
     logging.getLogger('tornado').setLevel(logging.WARNING)
@@ -145,8 +147,9 @@ def serve_command(dev_addr, config_file, strict, theme, theme_dir, livereload):
 @click.option('-t', '--theme', type=click.Choice(theme_choices), help=theme_help)
 @click.option('-e', '--theme-dir', type=click.Path(), help=theme_dir_help)
 @click.option('-d', '--site-dir', type=click.Path(), help=site_dir_help)
+@click.option('-y', '--yaml-safe-load', is_flag=True, default=False, help=yaml_safe_load_help)
 @common_options
-def build_command(clean, config_file, strict, theme, theme_dir, site_dir):
+def build_command(clean, config_file, strict, theme, theme_dir, site_dir, yaml_safe_load):
     """Build the MkDocs documentation"""
 
     # Don't override config value if user did not specify --strict flag
@@ -174,8 +177,9 @@ def build_command(clean, config_file, strict, theme, theme_dir, site_dir):
 @click.option('-r', '--remote-name', help=remote_name_help)
 @click.option('--force', is_flag=True, help=force_help)
 @click.option('--ignore-version', is_flag=True, help=ignore_version_help)
+@click.option('-y', '--yaml-safe-load', is_flag=True, default=False, help=yaml_safe_load_help)
 @common_options
-def gh_deploy_command(config_file, clean, message, remote_branch, remote_name, force, ignore_version):
+def gh_deploy_command(config_file, clean, message, remote_branch, remote_name, force, ignore_version, yaml_safe_load):
     """Deploy your documentation to GitHub Pages"""
     try:
         cfg = config.load_config(

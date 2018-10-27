@@ -114,4 +114,8 @@ DEFAULT_SCHEMA = (
     # A key value pair should be the string name (as the key) and a dict of config
     # options (as the value).
     ('plugins', config_options.Plugins(default=['search'])),
+
+    # enabling yaml_safe_load will call PyYAML#safe_load instead of #load
+    # see https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-7489
+    ('yaml_safe_load', config_options.Type(bool, default=False))
 )

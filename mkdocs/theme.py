@@ -81,7 +81,7 @@ class Theme(object):
         try:
             file_path = os.path.join(theme_dir, 'mkdocs_theme.yml')
             with open(file_path, 'rb') as f:
-                theme_config = utils.yaml_load(f)
+                theme_config = utils.yaml_load(f, safe_load=self._vars.get('yaml_safe_load', False))
                 if theme_config is None:
                     theme_config = {}
         except IOError as e:

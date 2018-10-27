@@ -49,7 +49,7 @@ markdown_extensions = [
 ]
 
 
-def yaml_load(source, loader=yaml.Loader):
+def yaml_load(source, loader=yaml.Loader, safe_load=False):
     """
     Wrap PyYaml's loader so we can extend it to suit our needs.
 
@@ -75,7 +75,10 @@ def yaml_load(source, loader=yaml.Loader):
     Loader.add_constructor('tag:yaml.org,2002:str', construct_yaml_str)
 
     try:
-        return yaml.load(source, Loader)
+        if safe_load:
+            return yaml.safe_load(source)
+        else:
+            return yaml.load(source, Loader)
     finally:
         # TODO: Remove this when external calls are properly cleaning up file
         # objects. Some mkdocs internal calls, sometimes in test lib, will

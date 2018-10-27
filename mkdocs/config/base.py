@@ -131,7 +131,7 @@ class Config(utils.UserDict):
 
     def load_file(self, config_file):
         try:
-            return self.load_dict(utils.yaml_load(config_file))
+            return self.load_dict(utils.yaml_load(config_file, safe_load=True))
         except YAMLError as e:
             # MkDocs knows and understands ConfigurationErrors
             raise exceptions.ConfigurationError(
